@@ -35,16 +35,16 @@ func (s *server) Get(ctx context.Context, req *desc.GetRequest) (*desc.GetRespon
 func main() {
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", grpcPort))
 	if err != nil {
-		log.Fatalf("failed to listen: #{err}")
+		log.Fatalf("failed to listen: %s", err.Error())
 	}
 
 	s := grpc.NewServer()
 	reflection.Register(s)
 	desc.RegisterAuthV1Server(s, &server{})
 
-	log.Printf("server listening at #{lis.Addr()}")
+	log.Printf("server listening at: %s", lis.Addr())
 
 	if err = s.Serve(lis); err != nil {
-		log.Fatalf("failed to serve: #{err}")
+		log.Fatalf("failed to serve: %s", err.Error())
 	}
 }
