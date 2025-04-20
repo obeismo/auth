@@ -9,14 +9,14 @@ type NewUser struct {
 	Email           string
 	Password        string
 	PasswordConfirm string
-	IsAdmin         bool
+	Role            bool
 }
 
 type UserData struct {
 	ID        int64
 	Name      string
 	Email     string
-	IsAdmin   bool
+	Role      bool
 	CreatedAt time.Time
 	UpdatedAt *time.Time
 }
@@ -25,5 +25,5 @@ type UpdatedUserData struct {
 	Name     string
 	Email    string
 	Password string
-	IsAdmin  bool
+	Role     bool
 }

@@ -34,7 +34,7 @@ func (r *repo) Create(ctx context.Context, auth *model.NewUser) (int64, error) {
 	builder := squirrel.Insert(tableName).
 		PlaceholderFormat(squirrel.Dollar).
 		Columns(nameColumn, emailColumn, passwordColumn, roleColumn).
-		Values(auth.Name, auth.Email, auth.Password, auth.IsAdmin).
+		Values(auth.Name, auth.Email, auth.Password, auth.Role).
 		Suffix("RETURNING id")
 
 	query, args, err := builder.ToSql()

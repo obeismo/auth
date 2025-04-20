@@ -10,7 +10,7 @@ func UserDataFromRepo(auth *modelRepo.UserData) *model.UserData {
 		ID:        auth.ID,
 		Name:      auth.Name,
 		Email:     auth.Email,
-		IsAdmin:   auth.IsAdmin,
+		Role:      auth.Role,
 		CreatedAt: auth.CreatedAt,
 		UpdatedAt: auth.UpdatedAt,
 	}
