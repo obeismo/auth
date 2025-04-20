@@ -2,7 +2,7 @@ package repository
 
 import (
 	"context"
-	"github.com/obeismo/auth/internal/repository/auth/model"
+	"github.com/obeismo/auth/internal/model"
 )
 
 type AuthRepository interface {
