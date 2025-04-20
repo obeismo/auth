@@ -14,7 +14,7 @@ type server struct {
 }
 
 func (s *server) Create(ctx context.Context, req *desc.CreateRequest) (*desc.CreateResponse, error) {
-	id, err := s.authRepository.Create(ctx, req.)
+	id, err := s.authRepository.Create(ctx, req.GetInfo())
 	if err != nil {
 		return nil, err
 	}

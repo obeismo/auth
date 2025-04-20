@@ -13,14 +13,13 @@ import (
 const (
 	tableName = "auth"
 
-	idColumn              = "id"
-	nameColumn            = "name"
-	emailColumn           = "email"
-	passwordColumn        = "password"
-	passwordConfirmColumn = "password_confirm"
-	roleColumn            = "role"
-	createdAtColumn       = "created_at"
-	updatedAtColumn       = "updated_at"
+	idColumn        = "id"
+	nameColumn      = "name"
+	emailColumn     = "email"
+	passwordColumn  = "password"
+	roleColumn      = "role"
+	createdAtColumn = "created_at"
+	updatedAtColumn = "updated_at"
 )
 
 type repo struct {
@@ -31,7 +30,7 @@ func NewRepository(db *pgxpool.Pool) repository.AuthRepository {
 	return &repo{db: db}
 }
 
-func (r *repo) Create(ctx context.Context, auth *model.Auth) (int64, error) {
+func (r *repo) Create(ctx context.Context, auth *model.NewUser) (int64, error) {
 	builder := squirrel.Insert(tableName).
 		PlaceholderFormat(squirrel.Dollar).
 		Columns(nameColumn, emailColumn, passwordColumn, roleColumn).
@@ -52,7 +51,7 @@ func (r *repo) Create(ctx context.Context, auth *model.Auth) (int64, error) {
 	return id, nil
 }
 
-func (r *repo) Get(ctx context.Context, id int64) (*model.Auth, error) {
+func (r *repo) Get(ctx context.Context, id int64) (*model.UserData, error) {
 	builder := squirrel.Select(idColumn, nameColumn, emailColumn, passwordColumn, roleColumn,
 		createdAtColumn, updatedAtColumn).
 		From(tableName).
@@ -64,11 +63,11 @@ func (r *repo) Get(ctx context.Context, id int64) (*model.Auth, error) {
 		return nil, err
 	}
 
-	var auth modelRepo.
-		err = r.db.QueryRow(ctx, query, args...).Scan(&auth)
+	var auth modelRepo.UserData
+	err = r.db.QueryRow(ctx, query, args...).Scan(&auth)
 	if err != nil {
 		return nil, err
 	}
 
-	return converter.ToAuthFromRepo(&auth), nil
+	return converter.UserDataFromRepo(&auth), nil
 }

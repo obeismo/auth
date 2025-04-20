@@ -6,6 +6,6 @@ import (
 )
 
 type AuthRepository interface {
-	Create(ctx context.Context, auth *model.Auth) (int64, error)
-	Get(ctx context.Context, id int64) (*model.Auth, error)
+	Create(ctx context.Context, auth *model.NewUser) (int64, error)
+	Get(ctx context.Context, id int64) (*model.UserData, error)
 }
