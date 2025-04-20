@@ -13,13 +13,14 @@ import (
 const (
 	tableName = "auth"
 
-	idColumn        = "id"
-	nameColumn      = "name"
-	emailColumn     = "email"
-	passwordColumn  = "password"
-	roleColumn      = "role"
-	createdAtColumn = "created_at"
-	updatedAtColumn = "updated_at"
+	idColumn              = "id"
+	nameColumn            = "name"
+	emailColumn           = "email"
+	passwordColumn        = "password"
+	passwordConfirmColumn = "password_confirm"
+	roleColumn            = "role"
+	createdAtColumn       = "created_at"
+	updatedAtColumn       = "updated_at"
 )
 
 type repo struct {
@@ -63,8 +64,8 @@ func (r *repo) Get(ctx context.Context, id int64) (*model.Auth, error) {
 		return nil, err
 	}
 
-	var auth modelRepo.Auth
-	err = r.db.QueryRow(ctx, query, args...).Scan(&auth)
+	var auth modelRepo.
+		err = r.db.QueryRow(ctx, query, args...).Scan(&auth)
 	if err != nil {
 		return nil, err
 	}
