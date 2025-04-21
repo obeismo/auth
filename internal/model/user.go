@@ -1,29 +1,33 @@
 package model
 
 import (
+	desc "github.com/obeismo/auth/pkg/auth/v1"
 	"time"
 )
 
-type NewUser struct {
-	Name            string `json:"name" validate:"required"`
-	Email           string `json:"email" validate:"required,email"`
-	Password        string `json:"password" validate:"required,min=5"`
-	PasswordConfirm string `json:"password_confirm" validate:"required,eqfield=Password"`
-	Role            uint8  `json:"role" validate:"required"`
-}
-
-type UserData struct {
+// User - модель, для работы с сервисным слоем
+type User struct {
 	ID        int64
-	Name      string
-	Email     string
-	Role      bool
+	Info      UserInfo
 	CreatedAt time.Time
-	UpdatedAt *time.Time
+	UpdatedAt time.Time
 }
 
-type UpdatedUserData struct {
-	Name     string
-	Email    string
-	Password string
-	Role     bool
+// UserInfo - модель, для работы с сервисным слоем
+type UserInfo struct {
+	Name            string    `db:"name"`
+	Email           string    `db:"email"`
+	Password        string    `db:"password_hash"`
+	PasswordConfirm string    `db:"password_hash"`
+	Role            desc.Role `db:"role"`
+}
+
+// UpdateUserInfo - модель, для работы с сервисным слоем
+type UpdateUserInfo struct {
+	UserID          int64   `db:"id"`
+	Name            *string `db:"name"`
+	OldPassword     *string `db:"old_password"`
+	Password        *string `db:"password"`
+	PasswordConfirm *string `db:"password_confirm"`
+	Role            *desc.Role
 }

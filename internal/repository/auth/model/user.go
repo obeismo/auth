@@ -4,26 +4,13 @@ import (
 	"time"
 )
 
-type NewUser struct {
-	Name            string
-	Email           string
-	Password        string
-	PasswordConfirm string
-	Role            bool
-}
-
-type UserData struct {
-	ID        int64
-	Name      string
-	Email     string
-	Role      bool
-	CreatedAt time.Time
-	UpdatedAt *time.Time
-}
-
-type UpdatedUserData struct {
-	Name     string
-	Email    string
-	Password string
-	Role     bool
+// User - модель, для работы с сервисным слоем
+type User struct {
+	ID        int64     `db:"id"`
+	Name      string    `db:"name"`
+	Email     string    `db:"email"`
+	Password  string    `db:"password"`
+	Role      string    `db:"role"`
+	CreatedAt time.Time `db:"created_at"`
+	UpdatedAt time.Time `db:"updated_at"`
 }
