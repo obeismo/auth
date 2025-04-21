@@ -9,7 +9,7 @@ import (
 )
 
 // ToUserDescFromService - ковертер, который преобразует модель сервисного слоя в модель апи (протобаф) слоя
-func ToUserDescFromService(user *serviceModel.User) *desc.AuthInfo {
+func ToUserDescFromService(user *serviceModel.User) *desc.User {
 	if user == nil {
 		return nil
 	}
@@ -57,7 +57,7 @@ func ToUpdateUserInfoServiceFromDesc(info *desc.UpdateUserInfo) *serviceModel.Up
 	}
 
 	return &serviceModel.UpdateUserInfo{
-		UserID:          info.UserID,
+		UserID:          info.Id,
 		Name:            checkEmptyOrNil(info.Name),
 		OldPassword:     checkEmptyOrNil(info.OldPassword),
 		Password:        checkEmptyOrNil(info.Password),

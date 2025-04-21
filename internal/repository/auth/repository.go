@@ -30,11 +30,11 @@ func NewRepository(db *pgxpool.Pool) repository.AuthRepository {
 	return &repo{db: db}
 }
 
-func (r *repo) Create(ctx context.Context, auth *model.NewUser) (int64, error) {
+func (r *repo) Create(ctx context.Context, user *model.UserInfo) (int64, error) {
 	builder := squirrel.Insert(tableName).
 		PlaceholderFormat(squirrel.Dollar).
 		Columns(nameColumn, emailColumn, passwordColumn, roleColumn).
-		Values(auth.Name, auth.Email, auth.Password, auth.Role).
+		Values(user.Name, user.Email, user.Password, user.Role).
 		Suffix("RETURNING id")
 
 	query, args, err := builder.ToSql()
@@ -51,7 +51,7 @@ func (r *repo) Create(ctx context.Context, auth *model.NewUser) (int64, error) {
 	return id, nil
 }
 
-func (r *repo) Get(ctx context.Context, id int64) (*model.UserData, error) {
+func (r *repo) Get(ctx context.Context, id int64) (*model.User, error) {
 	builder := squirrel.Select(idColumn, nameColumn, emailColumn, passwordColumn, roleColumn,
 		createdAtColumn, updatedAtColumn).
 		From(tableName).
@@ -63,11 +63,11 @@ func (r *repo) Get(ctx context.Context, id int64) (*model.UserData, error) {
 		return nil, err
 	}
 
-	var auth modelRepo.UserData
+	var auth modelRepo.User
 	err = r.db.QueryRow(ctx, query, args...).Scan(&auth)
 	if err != nil {
 		return nil, err
 	}
 
-	return converter.UserDataFromRepo(&auth), nil
+	return converter.ToUserFromRepo(&auth), nil
 }
