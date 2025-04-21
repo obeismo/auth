@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	tableName = "auth"
+	tableName = "users"
 
 	idColumn        = "id"
 	nameColumn      = "name"
@@ -34,7 +34,7 @@ func (r *repo) Create(ctx context.Context, user *model.UserInfo) (int64, error) 
 	builder := squirrel.Insert(tableName).
 		PlaceholderFormat(squirrel.Dollar).
 		Columns(nameColumn, emailColumn, passwordColumn, roleColumn).
-		Values(user.Name, user.Email, user.Password, user.Role).
+		Values(user.Name, user.Email, user.Password, user.Role.String()).
 		Suffix("RETURNING id")
 
 	query, args, err := builder.ToSql()
@@ -54,6 +54,7 @@ func (r *repo) Create(ctx context.Context, user *model.UserInfo) (int64, error) 
 func (r *repo) Get(ctx context.Context, id int64) (*model.User, error) {
 	builder := squirrel.Select(idColumn, nameColumn, emailColumn, passwordColumn, roleColumn,
 		createdAtColumn, updatedAtColumn).
+		PlaceholderFormat(squirrel.Dollar).
 		From(tableName).
 		Where(squirrel.Eq{idColumn: id}).
 		Limit(1)
@@ -64,7 +65,8 @@ func (r *repo) Get(ctx context.Context, id int64) (*model.User, error) {
 	}
 
 	var auth modelRepo.User
-	err = r.db.QueryRow(ctx, query, args...).Scan(&auth)
+	err = r.db.QueryRow(ctx, query, args...).Scan(&auth.ID, &auth.Name, &auth.Email, &auth.Password,
+		&auth.Role, &auth.CreatedAt, &auth.UpdatedAt)
 	if err != nil {
 		return nil, err
 	}

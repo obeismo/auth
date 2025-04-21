@@ -36,6 +36,7 @@ func ToUserInfoDescFromService(info *serviceModel.UserInfo) *desc.UserInfo {
 		Role:            info.Role,
 	}
 }
+
 func ToUserInfoServiceFromDesc(info *desc.UserInfo) *serviceModel.UserInfo {
 	if info == nil {
 		return &serviceModel.UserInfo{}
@@ -83,6 +84,6 @@ func RoleFromString(s string) desc.Role {
 	case constants.ADMIN:
 		return desc.Role_ADMIN
 	default:
-		return desc.Role_ROLE_UNSPECIFIED
+		return desc.Role_UNKNOWN
 	}
 }

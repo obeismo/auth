@@ -16,21 +16,21 @@ func ToUserFromRepo(user *modelRepo.User) *model.User {
 		ID:        user.ID,
 		Info:      *ToUserDataFromRepo(user),
 		CreatedAt: user.CreatedAt,
-		UpdatedAt: user.UpdatedAt,
+		UpdatedAt: user.UpdatedAt.Time,
 	}
 }
 
-func ToUserDataFromRepo(user *modelRepo.User) *model.UserInfo {
-	if user == nil {
+func ToUserDataFromRepo(info *modelRepo.User) *model.UserInfo {
+	if info == nil {
 		return &model.UserInfo{}
 	}
 
 	return &model.UserInfo{
-		Name:            user.Name,
-		Email:           user.Email,
-		Password:        user.Password,
+		Name:            info.Name,
+		Email:           info.Email,
+		Password:        info.Password,
 		PasswordConfirm: "",
-		Role:            RoleFromString(user.Role),
+		Role:            RoleFromString(info.Role),
 	}
 }
 
@@ -41,6 +41,6 @@ func RoleFromString(s string) desc.Role {
 	case constants.ADMIN:
 		return desc.Role_ADMIN
 	default:
-		return desc.Role_ROLE_UNSPECIFIED
+		return desc.Role_UNKNOWN
 	}
 }

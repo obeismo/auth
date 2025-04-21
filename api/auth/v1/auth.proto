@@ -14,7 +14,7 @@ service AuthV1 {
 }
 
 enum Role {
-    ROLE_UNSPECIFIED = 0;
+    UNKNOWN = 0;
     USER = 1;
     ADMIN = 2;
 } 

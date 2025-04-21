@@ -27,22 +27,22 @@ const (
 type Role int32
 
 const (
-	Role_ROLE_UNSPECIFIED Role = 0
-	Role_USER             Role = 1
-	Role_ADMIN            Role = 2
+	Role_UNKNOWN Role = 0
+	Role_USER    Role = 1
+	Role_ADMIN   Role = 2
 )
 
 // Enum value maps for Role.
 var (
 	Role_name = map[int32]string{
-		0: "ROLE_UNSPECIFIED",
+		0: "UNKNOWN",
 		1: "USER",
 		2: "ADMIN",
 	}
 	Role_value = map[string]int32{
-		"ROLE_UNSPECIFIED": 0,
-		"USER":             1,
-		"ADMIN":            2,
+		"UNKNOWN": 0,
+		"USER":    1,
+		"ADMIN":   2,
 	}
 )
 
@@ -146,7 +146,7 @@ func (x *UserInfo) GetRole() Role {
 	if x != nil {
 		return x.Role
 	}
-	return Role_ROLE_UNSPECIFIED
+	return Role_UNKNOWN
 }
 
 type User struct {
@@ -298,7 +298,7 @@ func (x *UpdateUserInfo) GetRole() Role {
 	if x != nil {
 		return x.Role
 	}
-	return Role_ROLE_UNSPECIFIED
+	return Role_UNKNOWN
 }
 
 type CreateUserRequest struct {
@@ -602,9 +602,9 @@ const file_auth_proto_rawDesc = "" +
 	"\x11UpdateUserRequest\x12#\n" +
 	"\x04info\x18\x01 \x01(\v2\x0f.UpdateUserInfoR\x04info\"#\n" +
 	"\x11DeleteUserRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id*1\n" +
-	"\x04Role\x12\x14\n" +
-	"\x10ROLE_UNSPECIFIED\x10\x00\x12\b\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id*(\n" +
+	"\x04Role\x12\v\n" +
+	"\aUNKNOWN\x10\x00\x12\b\n" +
 	"\x04USER\x10\x01\x12\t\n" +
 	"\x05ADMIN\x10\x022\xd1\x01\n" +
 	"\x06AuthV1\x121\n" +
