@@ -49,4 +49,10 @@ func main() {
 	s := grpc.NewServer()
 	reflection.Register(s)
 	desc.RegisterAuthV1Server(s, authAPI.NewServer(authSrv))
+
+	log.Printf("server listening at: %s", lis.Addr())
+
+	if err = s.Serve(lis); err != nil {
+		log.Fatalf("failed to serve: %v", err)
+	}
 }

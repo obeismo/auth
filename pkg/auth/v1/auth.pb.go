@@ -79,7 +79,7 @@ type UserInfo struct {
 	Email           string                 `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
 	Password        string                 `protobuf:"bytes,3,opt,name=password,proto3" json:"password,omitempty"`
 	PasswordConfirm string                 `protobuf:"bytes,4,opt,name=password_confirm,json=passwordConfirm,proto3" json:"password_confirm,omitempty"`
-	Role            Role                   `protobuf:"varint,5,opt,name=role,proto3,enum=auth_v1.Role" json:"role,omitempty"`
+	Role            Role                   `protobuf:"varint,5,opt,name=role,proto3,enum=Role" json:"role,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -221,11 +221,10 @@ type UpdateUserInfo struct {
 	state           protoimpl.MessageState  `protogen:"open.v1"`
 	Id              int64                   `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Name            *wrapperspb.StringValue `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Email           *wrapperspb.StringValue `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"`
-	OldPassword     *wrapperspb.StringValue `protobuf:"bytes,4,opt,name=old_password,json=oldPassword,proto3" json:"old_password,omitempty"`
-	Password        *wrapperspb.StringValue `protobuf:"bytes,5,opt,name=password,proto3" json:"password,omitempty"`
-	PasswordConfirm *wrapperspb.StringValue `protobuf:"bytes,6,opt,name=password_confirm,json=passwordConfirm,proto3" json:"password_confirm,omitempty"`
-	Role            Role                    `protobuf:"varint,7,opt,name=role,proto3,enum=auth_v1.Role" json:"role,omitempty"`
+	OldPassword     *wrapperspb.StringValue `protobuf:"bytes,3,opt,name=old_password,json=oldPassword,proto3" json:"old_password,omitempty"`
+	Password        *wrapperspb.StringValue `protobuf:"bytes,4,opt,name=password,proto3" json:"password,omitempty"`
+	PasswordConfirm *wrapperspb.StringValue `protobuf:"bytes,5,opt,name=password_confirm,json=passwordConfirm,proto3" json:"password_confirm,omitempty"`
+	Role            Role                    `protobuf:"varint,6,opt,name=role,proto3,enum=Role" json:"role,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -270,13 +269,6 @@ func (x *UpdateUserInfo) GetId() int64 {
 func (x *UpdateUserInfo) GetName() *wrapperspb.StringValue {
 	if x != nil {
 		return x.Name
-	}
-	return nil
-}
-
-func (x *UpdateUserInfo) GetEmail() *wrapperspb.StringValue {
-	if x != nil {
-		return x.Email
 	}
 	return nil
 }
@@ -443,7 +435,7 @@ func (x *GetUserRequest) GetId() int64 {
 
 type GetUserResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Info          *User                  `protobuf:"bytes,1,opt,name=info,proto3" json:"info,omitempty"`
+	User          *User                  `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -478,9 +470,9 @@ func (*GetUserResponse) Descriptor() ([]byte, []int) {
 	return file_auth_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *GetUserResponse) GetInfo() *User {
+func (x *GetUserResponse) GetUser() *User {
 	if x != nil {
-		return x.Info
+		return x.User
 	}
 	return nil
 }
@@ -578,49 +570,48 @@ var File_auth_proto protoreflect.FileDescriptor
 const file_auth_proto_rawDesc = "" +
 	"\n" +
 	"\n" +
-	"auth.proto\x12\aauth_v1\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/wrappers.proto\"\x9e\x01\n" +
+	"auth.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/wrappers.proto\"\x96\x01\n" +
 	"\bUserInfo\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x14\n" +
 	"\x05email\x18\x02 \x01(\tR\x05email\x12\x1a\n" +
 	"\bpassword\x18\x03 \x01(\tR\bpassword\x12)\n" +
-	"\x10password_confirm\x18\x04 \x01(\tR\x0fpasswordConfirm\x12!\n" +
-	"\x04role\x18\x05 \x01(\x0e2\r.auth_v1.RoleR\x04role\"\xb3\x01\n" +
+	"\x10password_confirm\x18\x04 \x01(\tR\x0fpasswordConfirm\x12\x19\n" +
+	"\x04role\x18\x05 \x01(\x0e2\x05.RoleR\x04role\"\xab\x01\n" +
 	"\x04User\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\x12%\n" +
-	"\x04info\x18\x02 \x01(\v2\x11.auth_v1.UserInfoR\x04info\x129\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x1d\n" +
+	"\x04info\x18\x02 \x01(\v2\t.UserInfoR\x04info\x129\n" +
 	"\n" +
 	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
-	"updated_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"\xed\x02\n" +
+	"updated_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"\xb1\x02\n" +
 	"\x0eUpdateUserInfo\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x120\n" +
-	"\x04name\x18\x02 \x01(\v2\x1c.google.protobuf.StringValueR\x04name\x122\n" +
-	"\x05email\x18\x03 \x01(\v2\x1c.google.protobuf.StringValueR\x05email\x12?\n" +
-	"\fold_password\x18\x04 \x01(\v2\x1c.google.protobuf.StringValueR\voldPassword\x128\n" +
-	"\bpassword\x18\x05 \x01(\v2\x1c.google.protobuf.StringValueR\bpassword\x12G\n" +
-	"\x10password_confirm\x18\x06 \x01(\v2\x1c.google.protobuf.StringValueR\x0fpasswordConfirm\x12!\n" +
-	"\x04role\x18\a \x01(\x0e2\r.auth_v1.RoleR\x04role\":\n" +
-	"\x11CreateUserRequest\x12%\n" +
-	"\x04info\x18\x01 \x01(\v2\x11.auth_v1.UserInfoR\x04info\"$\n" +
+	"\x04name\x18\x02 \x01(\v2\x1c.google.protobuf.StringValueR\x04name\x12?\n" +
+	"\fold_password\x18\x03 \x01(\v2\x1c.google.protobuf.StringValueR\voldPassword\x128\n" +
+	"\bpassword\x18\x04 \x01(\v2\x1c.google.protobuf.StringValueR\bpassword\x12G\n" +
+	"\x10password_confirm\x18\x05 \x01(\v2\x1c.google.protobuf.StringValueR\x0fpasswordConfirm\x12\x19\n" +
+	"\x04role\x18\x06 \x01(\x0e2\x05.RoleR\x04role\"2\n" +
+	"\x11CreateUserRequest\x12\x1d\n" +
+	"\x04info\x18\x01 \x01(\v2\t.UserInfoR\x04info\"$\n" +
 	"\x12CreateUserResponse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\" \n" +
 	"\x0eGetUserRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id\"4\n" +
-	"\x0fGetUserResponse\x12!\n" +
-	"\x04info\x18\x01 \x01(\v2\r.auth_v1.UserR\x04info\"@\n" +
-	"\x11UpdateUserRequest\x12+\n" +
-	"\x04info\x18\x01 \x01(\v2\x17.auth_v1.UpdateUserInfoR\x04info\"#\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\",\n" +
+	"\x0fGetUserResponse\x12\x19\n" +
+	"\x04user\x18\x01 \x01(\v2\x05.UserR\x04user\"8\n" +
+	"\x11UpdateUserRequest\x12#\n" +
+	"\x04info\x18\x01 \x01(\v2\x0f.UpdateUserInfoR\x04info\"#\n" +
 	"\x11DeleteUserRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id*1\n" +
 	"\x04Role\x12\x14\n" +
 	"\x10ROLE_UNSPECIFIED\x10\x00\x12\b\n" +
 	"\x04USER\x10\x01\x12\t\n" +
-	"\x05ADMIN\x10\x022\x81\x02\n" +
-	"\x06AuthV1\x12A\n" +
-	"\x06Create\x12\x1a.auth_v1.CreateUserRequest\x1a\x1b.auth_v1.CreateUserResponse\x128\n" +
-	"\x03Get\x12\x17.auth_v1.GetUserRequest\x1a\x18.auth_v1.GetUserResponse\x12<\n" +
-	"\x06Update\x12\x1a.auth_v1.UpdateUserRequest\x1a\x16.google.protobuf.Empty\x12<\n" +
-	"\x06Delete\x12\x1a.auth_v1.DeleteUserRequest\x1a\x16.google.protobuf.EmptyB2Z0github.com/obeismo/auth/grpc/pkg/auth/v1;auth_v1b\x06proto3"
+	"\x05ADMIN\x10\x022\xd1\x01\n" +
+	"\x06AuthV1\x121\n" +
+	"\x06Create\x12\x12.CreateUserRequest\x1a\x13.CreateUserResponse\x12(\n" +
+	"\x03Get\x12\x0f.GetUserRequest\x1a\x10.GetUserResponse\x124\n" +
+	"\x06Update\x12\x12.UpdateUserRequest\x1a\x16.google.protobuf.Empty\x124\n" +
+	"\x06Delete\x12\x12.DeleteUserRequest\x1a\x16.google.protobuf.EmptyB2Z0github.com/obeismo/auth/grpc/pkg/auth/v1;auth_v1b\x06proto3"
 
 var (
 	file_auth_proto_rawDescOnce sync.Once
@@ -637,47 +628,46 @@ func file_auth_proto_rawDescGZIP() []byte {
 var file_auth_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_auth_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_auth_proto_goTypes = []any{
-	(Role)(0),                      // 0: auth_v1.Role
-	(*UserInfo)(nil),               // 1: auth_v1.UserInfo
-	(*User)(nil),                   // 2: auth_v1.User
-	(*UpdateUserInfo)(nil),         // 3: auth_v1.UpdateUserInfo
-	(*CreateUserRequest)(nil),      // 4: auth_v1.CreateUserRequest
-	(*CreateUserResponse)(nil),     // 5: auth_v1.CreateUserResponse
-	(*GetUserRequest)(nil),         // 6: auth_v1.GetUserRequest
-	(*GetUserResponse)(nil),        // 7: auth_v1.GetUserResponse
-	(*UpdateUserRequest)(nil),      // 8: auth_v1.UpdateUserRequest
-	(*DeleteUserRequest)(nil),      // 9: auth_v1.DeleteUserRequest
+	(Role)(0),                      // 0: Role
+	(*UserInfo)(nil),               // 1: UserInfo
+	(*User)(nil),                   // 2: User
+	(*UpdateUserInfo)(nil),         // 3: UpdateUserInfo
+	(*CreateUserRequest)(nil),      // 4: CreateUserRequest
+	(*CreateUserResponse)(nil),     // 5: CreateUserResponse
+	(*GetUserRequest)(nil),         // 6: GetUserRequest
+	(*GetUserResponse)(nil),        // 7: GetUserResponse
+	(*UpdateUserRequest)(nil),      // 8: UpdateUserRequest
+	(*DeleteUserRequest)(nil),      // 9: DeleteUserRequest
 	(*timestamppb.Timestamp)(nil),  // 10: google.protobuf.Timestamp
 	(*wrapperspb.StringValue)(nil), // 11: google.protobuf.StringValue
 	(*emptypb.Empty)(nil),          // 12: google.protobuf.Empty
 }
 var file_auth_proto_depIdxs = []int32{
-	0,  // 0: auth_v1.UserInfo.role:type_name -> auth_v1.Role
-	1,  // 1: auth_v1.User.info:type_name -> auth_v1.UserInfo
-	10, // 2: auth_v1.User.created_at:type_name -> google.protobuf.Timestamp
-	10, // 3: auth_v1.User.updated_at:type_name -> google.protobuf.Timestamp
-	11, // 4: auth_v1.UpdateUserInfo.name:type_name -> google.protobuf.StringValue
-	11, // 5: auth_v1.UpdateUserInfo.email:type_name -> google.protobuf.StringValue
-	11, // 6: auth_v1.UpdateUserInfo.old_password:type_name -> google.protobuf.StringValue
-	11, // 7: auth_v1.UpdateUserInfo.password:type_name -> google.protobuf.StringValue
-	11, // 8: auth_v1.UpdateUserInfo.password_confirm:type_name -> google.protobuf.StringValue
-	0,  // 9: auth_v1.UpdateUserInfo.role:type_name -> auth_v1.Role
-	1,  // 10: auth_v1.CreateUserRequest.info:type_name -> auth_v1.UserInfo
-	2,  // 11: auth_v1.GetUserResponse.info:type_name -> auth_v1.User
-	3,  // 12: auth_v1.UpdateUserRequest.info:type_name -> auth_v1.UpdateUserInfo
-	4,  // 13: auth_v1.AuthV1.Create:input_type -> auth_v1.CreateUserRequest
-	6,  // 14: auth_v1.AuthV1.Get:input_type -> auth_v1.GetUserRequest
-	8,  // 15: auth_v1.AuthV1.Update:input_type -> auth_v1.UpdateUserRequest
-	9,  // 16: auth_v1.AuthV1.Delete:input_type -> auth_v1.DeleteUserRequest
-	5,  // 17: auth_v1.AuthV1.Create:output_type -> auth_v1.CreateUserResponse
-	7,  // 18: auth_v1.AuthV1.Get:output_type -> auth_v1.GetUserResponse
-	12, // 19: auth_v1.AuthV1.Update:output_type -> google.protobuf.Empty
-	12, // 20: auth_v1.AuthV1.Delete:output_type -> google.protobuf.Empty
-	17, // [17:21] is the sub-list for method output_type
-	13, // [13:17] is the sub-list for method input_type
-	13, // [13:13] is the sub-list for extension type_name
-	13, // [13:13] is the sub-list for extension extendee
-	0,  // [0:13] is the sub-list for field type_name
+	0,  // 0: UserInfo.role:type_name -> Role
+	1,  // 1: User.info:type_name -> UserInfo
+	10, // 2: User.created_at:type_name -> google.protobuf.Timestamp
+	10, // 3: User.updated_at:type_name -> google.protobuf.Timestamp
+	11, // 4: UpdateUserInfo.name:type_name -> google.protobuf.StringValue
+	11, // 5: UpdateUserInfo.old_password:type_name -> google.protobuf.StringValue
+	11, // 6: UpdateUserInfo.password:type_name -> google.protobuf.StringValue
+	11, // 7: UpdateUserInfo.password_confirm:type_name -> google.protobuf.StringValue
+	0,  // 8: UpdateUserInfo.role:type_name -> Role
+	1,  // 9: CreateUserRequest.info:type_name -> UserInfo
+	2,  // 10: GetUserResponse.user:type_name -> User
+	3,  // 11: UpdateUserRequest.info:type_name -> UpdateUserInfo
+	4,  // 12: AuthV1.Create:input_type -> CreateUserRequest
+	6,  // 13: AuthV1.Get:input_type -> GetUserRequest
+	8,  // 14: AuthV1.Update:input_type -> UpdateUserRequest
+	9,  // 15: AuthV1.Delete:input_type -> DeleteUserRequest
+	5,  // 16: AuthV1.Create:output_type -> CreateUserResponse
+	7,  // 17: AuthV1.Get:output_type -> GetUserResponse
+	12, // 18: AuthV1.Update:output_type -> google.protobuf.Empty
+	12, // 19: AuthV1.Delete:output_type -> google.protobuf.Empty
+	16, // [16:20] is the sub-list for method output_type
+	12, // [12:16] is the sub-list for method input_type
+	12, // [12:12] is the sub-list for extension type_name
+	12, // [12:12] is the sub-list for extension extendee
+	0,  // [0:12] is the sub-list for field type_name
 }
 
 func init() { file_auth_proto_init() }

@@ -20,10 +20,10 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	AuthV1_Create_FullMethodName = "/auth_v1.AuthV1/Create"
-	AuthV1_Get_FullMethodName    = "/auth_v1.AuthV1/Get"
-	AuthV1_Update_FullMethodName = "/auth_v1.AuthV1/Update"
-	AuthV1_Delete_FullMethodName = "/auth_v1.AuthV1/Delete"
+	AuthV1_Create_FullMethodName = "/AuthV1/Create"
+	AuthV1_Get_FullMethodName    = "/AuthV1/Get"
+	AuthV1_Update_FullMethodName = "/AuthV1/Update"
+	AuthV1_Delete_FullMethodName = "/AuthV1/Delete"
 )
 
 // AuthV1Client is the client API for AuthV1 service.
@@ -211,7 +211,7 @@ func _AuthV1_Delete_Handler(srv interface{}, ctx context.Context, dec func(inter
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var AuthV1_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "auth_v1.AuthV1",
+	ServiceName: "AuthV1",
 	HandlerType: (*AuthV1Server)(nil),
 	Methods: []grpc.MethodDesc{
 		{
