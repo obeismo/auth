@@ -3,7 +3,7 @@ package auth
 import (
 	"context"
 	"github.com/Masterminds/squirrel"
-	"github.com/jackc/pgx/v4/pgxpool"
+	"github.com/obeismo/auth/internal/client/db"
 	"github.com/obeismo/auth/internal/model"
 	"github.com/obeismo/auth/internal/repository"
 	"github.com/obeismo/auth/internal/repository/auth/converter"
@@ -23,10 +23,10 @@ const (
 )
 
 type repo struct {
-	db *pgxpool.Pool
+	db db.Client
 }
 
-func NewRepository(db *pgxpool.Pool) repository.AuthRepository {
+func NewRepository(db db.Client) repository.AuthRepository {
 	return &repo{db: db}
 }
 
@@ -42,8 +42,13 @@ func (r *repo) Create(ctx context.Context, user *model.UserInfo) (int64, error) 
 		return 0, err
 	}
 
+	q := db.Query{
+		Name:     "auth_repository.Create",
+		QueryRaw: query,
+	}
+
 	var id int64
-	err = r.db.QueryRow(ctx, query, args...).Scan(&id)
+	err = r.db.DB().QueryRowContext(ctx, q, args...).Scan(&id)
 	if err != nil {
 		return 0, err
 	}
@@ -64,9 +69,13 @@ func (r *repo) Get(ctx context.Context, id int64) (*model.User, error) {
 		return nil, err
 	}
 
+	q := db.Query{
+		Name:     "auth_repository.Get",
+		QueryRaw: query,
+	}
+
 	var auth modelRepo.User
-	err = r.db.QueryRow(ctx, query, args...).Scan(&auth.ID, &auth.Name, &auth.Email, &auth.Password,
-		&auth.Role, &auth.CreatedAt, &auth.UpdatedAt)
+	err = r.db.DB().ScanOneContext(ctx, &auth, q, args...)
 	if err != nil {
 		return nil, err
 	}

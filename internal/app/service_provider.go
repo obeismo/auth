@@ -2,8 +2,10 @@ package app
 
 import (
 	"context"
-	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/obeismo/auth/internal/api/auth"
+	"github.com/obeismo/auth/internal/client/db"
+	"github.com/obeismo/auth/internal/client/db/pg"
+	"github.com/obeismo/auth/internal/client/db/transaction"
 	"github.com/obeismo/auth/internal/closer"
 	"github.com/obeismo/auth/internal/config"
 	"github.com/obeismo/auth/internal/repository"
@@ -17,7 +19,8 @@ type serviceProvider struct {
 	pgConfig   config.PGConfig
 	grpcConfig config.GRPCConfig
 
-	pgPool         *pgxpool.Pool
+	dbClient       db.Client
+	txManager      db.TxManager
 	authRepository repository.AuthRepository
 
 	authService service.AuthService
@@ -55,31 +58,36 @@ func (s *serviceProvider) GRPCConfig() config.GRPCConfig {
 	return s.grpcConfig
 }
 
-func (s *serviceProvider) PgPool(ctx context.Context) *pgxpool.Pool {
-	if s.pgPool == nil {
-		pool, err := pgxpool.Connect(ctx, s.PGConfig().DSN())
+func (s *serviceProvider) DBClient(ctx context.Context) db.Client {
+	if s.dbClient == nil {
+		cl, err := pg.New(ctx, s.PGConfig().DSN())
 		if err != nil {
 			log.Fatalf("failed to connect to db: %s", err)
 		}
 
-		err = pool.Ping(ctx)
+		err = cl.DB().Ping(ctx)
 		if err != nil {
 			log.Fatalf("failed to ping db: %s", err)
 		}
-		closer.Add(func() error {
-			pool.Close()
-			return nil
-		})
+		closer.Add(cl.Close)
 
-		s.pgPool = pool
+		s.dbClient = cl
 	}
 
-	return s.pgPool
+	return s.dbClient
+}
+
+func (s *serviceProvider) TxManager(ctx context.Context) db.TxManager {
+	if s.txManager == nil {
+		s.txManager = transaction.NewTransactionManager(s.DBClient(ctx).DB())
+	}
+
+	return s.txManager
 }
 
 func (s *serviceProvider) AuthRepository(ctx context.Context) repository.AuthRepository {
 	if s.authRepository == nil {
-		s.authRepository = authRepository.NewRepository(s.PgPool(ctx))
+		s.authRepository = authRepository.NewRepository(s.DBClient(ctx))
 	}
 
 	return s.authRepository
@@ -87,7 +95,7 @@ func (s *serviceProvider) AuthRepository(ctx context.Context) repository.AuthRep
 
 func (s *serviceProvider) AuthService(ctx context.Context) service.AuthService {
 	if s.authService == nil {
-		s.authService = authService.NewService(s.AuthRepository(ctx))
+		s.authService = authService.NewService(s.AuthRepository(ctx), s.TxManager(ctx))
 	}
 
 	return s.authService
