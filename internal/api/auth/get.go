@@ -2,9 +2,10 @@ package auth
 
 import (
 	"context"
+	"log"
+
 	"github.com/obeismo/auth/internal/converter"
 	desc "github.com/obeismo/auth/pkg/auth/v1"
-	"log"
 )
 
 func (s *Server) Get(ctx context.Context, req *desc.GetUserRequest) (*desc.GetUserResponse, error) {

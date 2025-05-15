@@ -2,14 +2,15 @@ package app
 
 import (
 	"context"
+	"log"
+	"net"
+
 	"github.com/obeismo/auth/internal/closer"
 	"github.com/obeismo/auth/internal/config"
 	desc "github.com/obeismo/auth/pkg/auth/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/reflection"
-	"log"
-	"net"
 )
 
 type App struct {

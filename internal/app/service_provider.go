@@ -2,6 +2,8 @@ package app
 
 import (
 	"context"
+	"log"
+
 	"github.com/obeismo/auth/internal/api/auth"
 	"github.com/obeismo/auth/internal/client/db"
 	"github.com/obeismo/auth/internal/client/db/pg"
@@ -12,7 +14,6 @@ import (
 	authRepository "github.com/obeismo/auth/internal/repository/auth"
 	"github.com/obeismo/auth/internal/service"
 	authService "github.com/obeismo/auth/internal/service/auth"
-	"log"
 )
 
 type serviceProvider struct {

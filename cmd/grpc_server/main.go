@@ -2,8 +2,9 @@ package main
 
 import (
 	"context"
-	"github.com/obeismo/auth/internal/app"
 	"log"
+
+	"github.com/obeismo/auth/internal/app"
 )
 
 func main() {

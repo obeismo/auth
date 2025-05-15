@@ -1,8 +1,9 @@
 package model
 
 import (
-	desc "github.com/obeismo/auth/pkg/auth/v1"
 	"time"
+
+	desc "github.com/obeismo/auth/pkg/auth/v1"
 )
 
 // User - модель, для работы с сервисным слоем

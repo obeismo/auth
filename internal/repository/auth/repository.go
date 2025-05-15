@@ -2,6 +2,7 @@ package auth
 
 import (
 	"context"
+
 	"github.com/Masterminds/squirrel"
 	"github.com/obeismo/auth/internal/client/db"
 	"github.com/obeismo/auth/internal/model"
