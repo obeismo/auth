@@ -2,12 +2,14 @@ package tests
 
 import (
 	"context"
-	"fmt"
 	"testing"
+
+	"errors"
 
 	"github.com/brianvoe/gofakeit/v6"
 	"github.com/gojuno/minimock/v3"
 	"github.com/obeismo/auth/internal/api/auth"
+	"github.com/obeismo/auth/internal/converter"
 	"github.com/obeismo/auth/internal/model"
 	"github.com/obeismo/auth/internal/service"
 	serviceMocks "github.com/obeismo/auth/internal/service/mocks"
@@ -15,9 +17,21 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func toModelUserInfo(info *desc.UserInfo) *model.UserInfo {
+	if info == nil {
+		return nil
+	}
+	return &model.UserInfo{
+		Name:            info.Name,
+		Email:           info.Email,
+		Password:        info.Password,
+		PasswordConfirm: info.PasswordConfirm,
+		Role:            info.Role, // убедись, что типы совместимы
+	}
+}
+
 func TestCreate(t *testing.T) {
 	t.Parallel()
-
 	type authServiceMockFunc func(mc *minimock.Controller) service.AuthService
 
 	type args struct {
@@ -34,13 +48,13 @@ func TestCreate(t *testing.T) {
 		email           = gofakeit.Email()
 		password        = gofakeit.Word()
 		passwordConfirm = gofakeit.Word()
-		serviceErr      = fmt.Errorf("service error")
+		serviceErr      = errors.New("service error")
 
 		userInfoSuccess = &desc.UserInfo{
-			Name:            "name",
-			Email:           "email",
-			Password:        "password",
-			PasswordConfirm: "password",
+			Name:            name,
+			Email:           email,
+			Password:        password,
+			PasswordConfirm: password,
 			Role:            desc.Role_USER,
 		}
 
@@ -146,7 +160,7 @@ func TestCreate(t *testing.T) {
 			err:  serviceErr,
 			authServiceMock: func(mc *minimock.Controller) service.AuthService {
 				mock := serviceMocks.NewAuthServiceMock(mc)
-				mock.CreateMock.Expect(ctx, userModelSuccess).Return(0, serviceErr)
+				mock.CreateMock.Expect(ctx, converter.ToUserInfoServiceFromDesc(userInfoFailedCase1)).Return(0, serviceErr)
 				return mock
 			},
 		},
@@ -160,7 +174,7 @@ func TestCreate(t *testing.T) {
 			err:  serviceErr,
 			authServiceMock: func(mc *minimock.Controller) service.AuthService {
 				mock := serviceMocks.NewAuthServiceMock(mc)
-				mock.CreateMock.Expect(ctx, userModelSuccess).Return(0, serviceErr)
+				mock.CreateMock.Expect(ctx, converter.ToUserInfoServiceFromDesc(userInfoFailedCase2)).Return(0, serviceErr)
 				return mock
 			},
 		},
@@ -174,7 +188,7 @@ func TestCreate(t *testing.T) {
 			err:  serviceErr,
 			authServiceMock: func(mc *minimock.Controller) service.AuthService {
 				mock := serviceMocks.NewAuthServiceMock(mc)
-				mock.CreateMock.Expect(ctx, userModelSuccess).Return(0, serviceErr)
+				mock.CreateMock.Expect(ctx, converter.ToUserInfoServiceFromDesc(userInfoFailedCase3)).Return(0, serviceErr)
 				return mock
 			},
 		},
@@ -188,7 +202,7 @@ func TestCreate(t *testing.T) {
 			err:  serviceErr,
 			authServiceMock: func(mc *minimock.Controller) service.AuthService {
 				mock := serviceMocks.NewAuthServiceMock(mc)
-				mock.CreateMock.Expect(ctx, userModelSuccess).Return(0, serviceErr)
+				mock.CreateMock.Expect(ctx, converter.ToUserInfoServiceFromDesc(userInfoFailedCase4)).Return(0, serviceErr)
 				return mock
 			},
 		},
