@@ -17,19 +17,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func toModelUserInfo(info *desc.UserInfo) *model.UserInfo {
-	if info == nil {
-		return nil
-	}
-	return &model.UserInfo{
-		Name:            info.Name,
-		Email:           info.Email,
-		Password:        info.Password,
-		PasswordConfirm: info.PasswordConfirm,
-		Role:            info.Role, // убедись, что типы совместимы
-	}
-}
-
 func TestCreate(t *testing.T) {
 	t.Parallel()
 	type authServiceMockFunc func(mc *minimock.Controller) service.AuthService
